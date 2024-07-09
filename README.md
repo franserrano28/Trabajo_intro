@@ -1,18 +1,18 @@
 ## Trabajo_intro
 
-##INSTALL
+## INSTALL
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install Flask
 ```
-##RUN
+## RUN
 ```bash
 source venv/bin/activate
 cd backend
 flask run --debug
 ```
-#Abro otra terminal
+# Abro otra terminal
 ```bash
 source venv/bin/activate
 cd ../frontend
