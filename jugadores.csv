@@ -1,0 +1,54 @@
+Id,Nombre,Edad,Nacionalidad,Puntaje,Posicion
+1,Lionel Messi,37,Argentina,99,Delantero
+2,Cristiano Ronaldo,39,Portugal,98,Delantero
+3,Robert Lewandowski,35,Polonia,96,Delantero
+4,Neymar Jr.,32,Brasil,95,Delantero
+5,Kylian Mbappé,25,Francia,94,Delantero
+6,Harry Kane,30,Inglaterra,93,Delantero
+7,Luis Suárez,37,Uruguay,92,Delantero
+8,Eden Hazard,33,Bélgica,91,Delantero
+9,Karim Benzema,36,Francia,90,Delantero
+10,Paulo Dybala,30,Argentina,89,Delantero
+11,Erling Haaland,23,Noruega,88,Delantero
+12,Romelu Lukaku,31,Bélgica,87,Delantero
+
+13,Luka Modric,38,Croacia,97,Mediocampista
+14,Kevin De Bruyne,32,Bélgica,97,Mediocampista
+15,Toni Kroos,34,Alemania,92,Mediocampista
+16,N'Golo Kanté,33,Francia,91,Mediocampista
+17,Paul Pogba,31,Francia,90,Mediocampista
+18,Sergio Busquets,35,España,89,Mediocampista
+19,Frenkie de Jong,26,Países Bajos,88,Mediocampista
+20,Joshua Kimmich,29,Alemania,87,Mediocampista
+21,Marco Verratti,31,Italia,86,Mediocampista
+22,Thiago Alcántara,33,España,85,Mediocampista
+23,Bruno Fernandes,29,Portugal,84,Mediocampista
+24,Jorginho,32,Italia,83,Mediocampista
+25,Saúl Ñíguez,29,España,82,Mediocampista
+
+26,Manuel Neuer,38,Alemania,95,Arquero
+27,Jan Oblak,31,Eslovenia,94,Arquero
+28,Thibaut Courtois,32,Bélgica,93,Arquero
+29,Alisson Becker,31,Brasil,92,Arquero
+30,Marc-André ter Stegen,32,Alemania,91,Arquero
+31,Keylor Navas,37,Costa Rica,90,Arquero
+32,Hugo Lloris,37,Francia,89,Arquero
+33,David de Gea,33,España,88,Arquero
+34,Ederson Moraes,30,Brasil,87,Arquero
+35,Wojciech Szczęsny,34,Polonia,86,Arquero
+
+36,Sergio Ramos,38,España,94,Defensor
+37,Virgil van Dijk,32,Países Bajos,92,Defensor
+38,Giorgio Chiellini,39,Italia,91,Defensor
+39,Cristian Romero,26,Argentina,90,Defensor
+40,Raphael Varane,31,Francia,89,Defensor
+41,Gerard Piqué,37,España,88,Defensor
+42,Jordi Alba,35,España,87,Defensor
+43,Andrew Robertson,30,Escocia,86,Defensor
+44,Trent Alexander-Arnold,25,Inglaterra,85,Defensor
+45,Kyle Walker,34,Inglaterra,84,Defensor
+46,Leonardo Bonucci,37,Italia,83,Defensor
+47,Marquinhos,30,Brasil,82,Defensor
+48,Aymeric Laporte,30,España,81,Defensor
+49,Rúben Dias,27,Portugal,80,Defensor
+50,Thiago Silva,39,Brasil,79,Defensor
