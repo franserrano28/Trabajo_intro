@@ -1,35 +1,30 @@
 body{
-    background-color: darkcyan;
+    background: url(fondo_pasto.jpg) no-repeat center center fixed;
+    background-size: cover;
     margin: auto;
-    font-family: Arial, sans-serif;
+    font-family: Tahoma, Geneva, sans-serif;
 }
 header{
     display: flex;
-    text-align: center;
-    background-color: black;
-    justify-content: space-between;
-}
-.titulo{
-    display: flex;
-    margin-left: 15%;
-    color: white;
-}
-div h1{
-    margin-right:35px;
-}
-header div img{
-    display: flex;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.637);
+    justify-content: space-between;
+    padding-bottom: 2%;
+}
+header img{
     color: white;
-    width: 10%;
+    width: 35%;
+    margin-left: 10%;
+    border-radius: 100px;
+    margin-top: 2%;
 }
 header a{
-    display: flex;
-    width: 40%;
     color: white;
     text-decoration: none;
     align-items: center;
-    margin-right: 15%;
+    float: right;
+    margin-right: 10%;
+    margin-top: 2%;
 }
 header a:hover{
     color:aqua;
@@ -39,26 +34,29 @@ nav{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-right: 20%;
-    margin-left: 20%;
-    margin-top: 5%;
+    margin-right: 15%;
+    margin-left: 15%;
+    margin-top: 3%;
 }
 nav a{
-    width: 30%;
+    padding: 10px 60px;
     font-size: 20px;
     text-decoration: none;
     text-align: center;
-    background-color: aquamarine;
+    background-color: rgba(120, 128, 91, 0.877);
     border-radius: 10px;
+    color:rgb(43, 41, 41);
+    font-weight: bold;
 }
 nav a:hover{
-    background-color: rgb(42, 212, 156);
-    font-size: 150%;
+    background-color: rgb(178, 190, 135);
+    font-size: 120%;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 .estadio {
     display: flex;
     justify-content: center;
-    margin-top: 10%;
+    margin-top: 5%;
 }
 .grada {
     border-radius: 50px;
