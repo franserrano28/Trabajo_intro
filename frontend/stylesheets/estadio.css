@@ -1,0 +1,149 @@
+.estadio {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+.grada {
+    border-radius: 50px;
+    background-color: #212529;
+    padding: 5%;
+    width: 780px;
+}
+.campo {
+    display: flex;
+    justify-content: start;
+    position: relative;
+    border-radius: 50px;
+    width: 700px;
+    height: 360px;
+    background-color:green;
+    background-position: center;
+    background-size: 100%;
+    padding: 40px;
+}
+.izquierda {
+    position: relative;
+    width: 50%;
+    border: 2px solid #fff;
+    border-right: none;
+    overflow: hidden;
+}
+.derecha {
+    position: relative;
+    width: 50%;
+    border: 2px solid #fff;
+    overflow: hidden;
+}
+.contenedor-porteria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+ 
+.porteria {
+    border: 2px solid #fff;
+    width: 15px;
+    height: 50px;
+}
+ 
+.porteria-izquierda {
+    border-right: none;
+}
+ 
+.porteria-derecha {
+    border-left: none;
+}
+.corner {
+    border: 1px solid #fff;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+ 
+.izquierda .corner-superior {
+    position: absolute;
+    top: -12px;
+    left: -14px;
+}
+ 
+.izquierda .corner-inferior {
+    position: absolute;
+    bottom: -12px;
+    left: -14px;
+}
+ 
+.derecha .corner-superior {
+    position: absolute;
+    top: -12px;
+    right: -14px;
+}
+ 
+.derecha .corner-inferior {
+    position: absolute;
+    bottom: -12px;
+    right: -14px;
+}
+.area {
+    width: 90px;
+    height: 160px;
+    border: 1px solid #fff;
+    top: 29%;
+    position: absolute;
+}
+ 
+.izquierda .area {
+    border-left: none;
+}
+ 
+.derecha .area {
+    right: 0px;
+    border-right: none;
+}
+.arquero{
+    width: 120px;
+    height: 150px;
+    position:absolute;
+    top:30%;
+}
+.defensores{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+    height: 310px;
+    gap:10px;
+    position:absolute;
+    left:50%;
+    top:8%;
+}
+.defensor{
+    width:120px;
+    height:150px;
+    position:relative;
+}
+.mediocampista{
+    width: 120px;
+    height: 150px;
+    position:absolute;
+    top:30%;
+}
+.delantero{
+    width: 120px;
+    height: 150px;
+    position:absolute;
+    top:30%;
+    left:50%;
+}
+.tarjeta_jugador{
+    width:100%;
+    height:100%;
+    position: absolute;
+    bottom: 0%;
+    border-radius: 10px;
+    border: 3px solid rgb(66, 6, 122);
+}
+.tarjeta_jugador:hover{
+    width:110%;
+    height:110%;
+}
