@@ -36,13 +36,39 @@
 
                     // Agregar el elemento del equipo al contenedor principal
                     container.appendChild(equipoItem);
+
+                    // Crear botón "Editar" para cada equipo
+                    const editButton = document.createElement("button");
+                    editButton .textContent = "Editar";
+                    editButton .addEventListener("click", function() {
+                        editEquipo(equipo.id); // Pasar el ID del equipo al eliminar
+                    });
+
+                    // Agregar el botón al elemento del equipo
+                    equipoItem.appendChild(editButton);
+
+                    // Agregar el elemento del equipo al contenedor principal
+                    container.appendChild(equipoItem);
+
+
                 });
             })
             .catch(error => {
                 console.error("Error al obtener equipos:", error);
             });
     }
+
+
     fetchEquipos(); // Llamar a fetchEquipos al cargar la página
+
+    function editEquipo(id) {
+        // Construir la URL de la página HTML a la que quieres redirigir
+        const url = `/editar_equipos/index.html`;  // Ajusta la ruta y el nombre del archivo HTML según tu estructura
+
+        // Redirigir a la nueva página
+        window.location.href = url;
+    }
+
     function eliminarEquipo(equipoId) {
         // Hacer la solicitud DELETE usando fetch
         fetch(`http://localhost:5000/eliminar_equipo/${equipoId}`, {
