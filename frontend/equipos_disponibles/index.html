@@ -1,62 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipos Disponibles</title>
+    <title>Dream Team</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<div id="equipos-container">
-    <!-- Aquí se insertarán dinámicamente los equipos y botones -->
-</div>
+    <body>
+        <header>
+            <img src="../Encabezado_DreamTeam.png" alt="Logo Dream team">
+            <a href="#" target="_blank">¿Que es DREAM TEAM?</a>
+        </header>
+        <div id="equipos-container" class="equipos-container">
+            <!-- Aquí se insertarán dinámicamente los equipos y botones -->
+        </div>
+        <script>
+            function fetchEquipos() {
+                fetch("http://localhost:5000/equipos")
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById("equipos-container");
+                        container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
 
+                        data.forEach(equipo => {
+                            // Crear elemento principal para el equipo
+                            const equipoItem = document.createElement("div");
+                            equipoItem.className = "equipo";
 
-<script>
-    function fetchEquipos() {
-        fetch("http://localhost:5000/equipos")
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById("equipos-container");
-                container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
+                            // Crear elemento para mostrar el nombre y puntaje del equipo
+                            const textoDiv = document.createElement("div");
+                            textoDiv.className = "texto";
+                            textoDiv.innerHTML = `<h1>Equipo: ${equipo.nombre}</h1><h1>Puntaje: ${equipo.puntaje}</h1>`;
 
-                data.forEach(equipo => {
-                    // Crear elemento para mostrar el nombre y puntaje del equipo
-                    const equipoItem = document.createElement("div");
-                    equipoItem.textContent = `Equipo: ${equipo.nombre}, Puntaje: ${equipo.puntaje}`;
+                            // Crear contenedor para los botones
+                            const botonesDiv = document.createElement("div");
+                            botonesDiv.className = "botones";
 
-                    // Crear botón "Eliminar" para cada equipo
-                    const deleteButton = document.createElement("button");
-                    deleteButton.textContent = "Eliminar";
-                    deleteButton.addEventListener("click", function() {
-                        eliminarEquipo(equipo.id); // Pasar el ID del equipo al eliminar
+                            // Crear botón "Eliminar" para cada equipo
+                            const deleteButton = document.createElement("button");
+                            deleteButton.className = "eliminar";
+                            deleteButton.textContent = "Eliminar";
+                            deleteButton.addEventListener("click", function() {
+                                eliminarEquipo(equipo.id); // Pasar el ID del equipo al eliminar
+                            });
+
+                            // Crear botón "Editar" para cada equipo
+                            const editButton = document.createElement("button");
+                            editButton.className = "editar";
+                            editButton.textContent = "Editar";
+                            editButton.addEventListener("click", function() {
+                                editEquipo(equipo.id); // Pasar el ID del equipo al eliminar
+                            });
+
+                            // Agregar los botones al contenedor de botones usando append
+                            botonesDiv.append(deleteButton, editButton);
+
+                            // Agregar el texto y el contenedor de botones al elemento principal del equipo usando append
+                            equipoItem.append(textoDiv, botonesDiv);
+
+                            // Agregar el elemento del equipo al contenedor principal
+                            container.append(equipoItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener equipos:", error);
                     });
-
-                    // Agregar el botón al elemento del equipo
-                    equipoItem.appendChild(deleteButton);
-
-                    // Agregar el elemento del equipo al contenedor principal
-                    container.appendChild(equipoItem);
-
-                    // Crear botón "Editar" para cada equipo
-                    const editButton = document.createElement("button");
-                    editButton .textContent = "Editar";
-                    editButton .addEventListener("click", function() {
-                        editEquipo(equipo.id); // Pasar el ID del equipo al eliminar
-                    });
-
-                    // Agregar el botón al elemento del equipo
-                    equipoItem.appendChild(editButton);
-
-                    // Agregar el elemento del equipo al contenedor principal
-                    container.appendChild(equipoItem);
-
-
-                });
-            })
-            .catch(error => {
-                console.error("Error al obtener equipos:", error);
-            });
-    }
+            }
 
 
     fetchEquipos(); // Llamar a fetchEquipos al cargar la página
@@ -95,6 +102,6 @@
     }
 
 
-</script>
-</body>
+        </script>
+    </body>
 </html>
