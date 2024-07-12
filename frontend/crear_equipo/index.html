@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dream Team</title>
+</head>
+<body>
+    <form id="team-form">
+        <label>Arquero:</label>
+        <select name="arquero">
+            <option value="">Seleccione Arquero</option>
+        </select>
+        <br>
+
+        <label>Defensor 1:</label>
+        <select name="defensor1">
+            <option value="">Seleccione Defensor 1</option>
+        </select>
+        <br>
+
+        <label>Defensor 2:</label>
+        <select name="defensor2">
+            <option value="">Seleccione Defensor 2</option>
+        </select>
+        <br>
+
+        <label>Mediocampista:</label>
+        <select name="mediocampista">
+            <option value="">Seleccione Mediocampista</option>
+        </select>
+        <br>
+
+        <label>Delantero:</label>
+        <select name="delantero">
+            <option value="">Seleccione Delantero</option>
+        </select>
+        <br>
+    </form>
+    <script>
+        function response_received(response) {
+            console.log(response)
+            return response.json()
+        }
+        
+        function request_error(error) {
+            console.log(error)
+        }
+
+        function fillForm(jugadores, position) {
+            //Busca el select
+            const select = document.querySelector(`select[name="${position}"]`);
+
+            // Limpiar opciones existentes para que no se repita ninguna
+            select.innerHTML = '';
+
+            
+            for (let i = 0; i < jugadores.length; i++) {
+                const jugador = jugadores[i];
+                const option = document.createElement("option");
+                option.value = jugador.id;
+                option.textContent = jugador.nombre_jugador;
+                select.append(option);
+            }
+        }
+
+        function parse_data(jugadores) {
+            console.log(jugadores);
+
+            // Llenar cada select con jugadores según su posición, el (j => j.posicion === "pos") es como decir para cada elemento del array verifica si j.posicio es igual a pos
+            fillForm(jugadores.filter(j => j.posicion === "arq"), "arquero");
+            fillForm(jugadores.filter(j => j.posicion === "def"), "defensor1");
+            fillForm(jugadores.filter(j => j.posicion === "def"), "defensor2");
+            fillForm(jugadores.filter(j => j.posicion === "med"), "mediocampista");
+            fillForm(jugadores.filter(j => j.posicion === "del"), "delantero");
+        }
+
+
+        fetch("http://localhost:5000/jugadores")
+            .then(response_received)
+            .then(parse_data)
+            .catch(request_error)
+    </script>
+</body>
+</html>
