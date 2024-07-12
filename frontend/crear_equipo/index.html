@@ -1,61 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Document</title>
-    <link rel="stylesheet" href="../stylesheets/style.css">
-    <link rel="stylesheet" href="../stylesheets/estadio.css">
+    <title>Dream Team</title>
 </head>
 <body>
-    <main>
-        <div class="estadio">
-            <div class="grada">
-                <div class="campo">
-                    <div class="contenedor-porteria">
-                        <div class="porteria porteria-izquierda"></div>
-                    </div>
-                    <div class="izquierda">
-                        <div class="corner corner-superior"></div>
-                        <div class="area">
-                            <div class="area-pequena">
-                            </div>
-                            <div class="punto-penalty"></div>
-                            <div class="arco"></div>
-                        </div>
-                        <div class="arquero">
-                            <img src="Arquero.png" alt="Arquero" class="tarjeta_jugador">
-                        </div>
-                        <div class="defensores">
-                            <div class="defensor">
-                                <img src="Defensor_1.jpg" alt="Defensor" class="tarjeta_jugador">
-                            </div>
-                            <div class="defensor">
-                                <img src="Defensor_2.webp" alt="Defensor" class="tarjeta_jugador">
-                            </div>
-                        </div>
-                        <div class="corner corner-inferior"></div>
-                    </div>
-                    <div class="derecha">
-                        <div class="corner corner-superior"></div>
-                        <div class="area">
-                            <div class="area-pequena">
-                            </div>
-                            <div class="punto-penalty"></div>
-                            <div class="arco"></div>
-                        </div>
-                        <div class="mediocampista">
-                            <img src="Mediocampista.jpg" alt="Mediocampista" class="tarjeta_jugador">
-                        </div>
-                        <div class="delantero">
-                            <img src="Delantero.jpeg" alt="Delantero" class="tarjeta_jugador">
-                        </div>
-                        <div class="corner corner-inferior"></div>
-                    </div>
-                    <div class="contenedor-porteria">
-                        <div class="porteria porteria-derecha"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    <form id="team-form">
+        <label>Arquero:</label>
+        <select name="arquero">
+            <option value="">Seleccione Arquero</option>
+        </select>
+        <br>
+
+        <label>Defensor 1:</label>
+        <select name="defensor1">
+            <option value="">Seleccione Defensor 1</option>
+        </select>
+        <br>
+
+        <label>Defensor 2:</label>
+        <select name="defensor2">
+            <option value="">Seleccione Defensor 2</option>
+        </select>
+        <br>
+
+        <label>Mediocampista:</label>
+        <select name="mediocampista">
+            <option value="">Seleccione Mediocampista</option>
+        </select>
+        <br>
+
+        <label>Delantero:</label>
+        <select name="delantero">
+            <option value="">Seleccione Delantero</option>
+        </select>
+        <br>
+    </form>
+    <script>
+        function response_received(response) {
+            console.log(response)
+            return response.json()
+        }
+        
+        function request_error(error) {
+            console.log(error)
+        }
+
+        function fillForm(jugadores, position) {
+            //Busca el select
+            const select = document.querySelector(`select[name="${position}"]`);
+
+            // Limpiar opciones existentes para que no se repita ninguna
+            select.innerHTML = '';
+
+            
+            for (let i = 0; i < jugadores.length; i++) {
+                const jugador = jugadores[i];
+                const option = document.createElement("option");
+                option.value = jugador.id;
+                option.textContent = jugador.nombre_jugador;
+                select.append(option);
+            }
+        }
+
+        function parse_data(jugadores) {
+            console.log(jugadores);
+
+            // Llenar cada select con jugadores según su posición, el (j => j.posicion === "pos") es como decir para cada elemento del array verifica si j.posicio es igual a pos
+            fillForm(jugadores.filter(j => j.posicion === "arq"), "arquero");
+            fillForm(jugadores.filter(j => j.posicion === "def"), "defensor1");
+            fillForm(jugadores.filter(j => j.posicion === "def"), "defensor2");
+            fillForm(jugadores.filter(j => j.posicion === "med"), "mediocampista");
+            fillForm(jugadores.filter(j => j.posicion === "del"), "delantero");
+        }
+
+
+        fetch("http://localhost:5000/jugadores")
+            .then(response_received)
+            .then(parse_data)
+            .catch(request_error)
+    </script>
 </body>
 </html>
