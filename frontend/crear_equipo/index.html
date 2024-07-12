@@ -115,25 +115,28 @@
         });
     }
 
+    function updatePlayerImage(imgElement, playerId, position) {
+    imgElement.innerHTML = `<img src="/Users/martinonervi/Desktop/tp/data/imagenes/${playerId}.png" alt="${position}" class="tarjeta_jugador">`;
+    }
+
     function parse_data(jugadores) {
         console.log('Jugadores:', jugadores);
-        fillForm(jugadores.filter(j => j.posicion === "arq"), "arquero");
-        fillForm(jugadores.filter(j => j.posicion === "def"), "defensor1");
-        fillForm(jugadores.filter(j => j.posicion === "def"), "defensor2");
-        fillForm(jugadores.filter(j => j.posicion === "med"), "mediocampista");
-        fillForm(jugadores.filter(j => j.posicion === "del"), "delantero");
-        
         const arqueroImg = document.querySelector('.arquero');
         const defensores = document.querySelectorAll('.defensor');
         const mediocampistaImg = document.querySelector('.mediocampista');
         const delanteroImg = document.querySelector('.delantero');
 
-        arqueroImg.innerHTML = `<img src="${jugadores.find(j => j.posicion === 'arq').imagen}" alt="Arquero" class="tarjeta_jugador">`;
+        const arquero = jugadores.find(j => j.posicion === 'arq');
+        const defensoresArray = jugadores.filter(j => j.posicion === 'def');
+        const mediocampista = jugadores.find(j => j.posicion === 'med');
+        const delantero = jugadores.find(j => j.posicion === 'del');
+
+        updatePlayerImage(arqueroImg, arquero.id, 'arquero');
         defensores.forEach((defensor, index) => {
-            defensor.innerHTML = `<img src="${jugadores.filter(j => j.posicion === 'def')[index].imagen}" alt="Defensor" class="tarjeta_jugador">`;
+            updatePlayerImage(defensor, defensoresArray[index].id, 'defensor');
         });
-        mediocampistaImg.innerHTML = `<img src="${jugadores.find(j => j.posicion === 'med').imagen}" alt="Mediocampista" class="tarjeta_jugador">`;
-        delanteroImg.innerHTML = `<img src="${jugadores.find(j => j.posicion === 'del').imagen}" alt="Delantero" class="tarjeta_jugador">`;
+        updatePlayerImage(mediocampistaImg, mediocampista.id, 'mediocampista');
+        updatePlayerImage(delanteroImg, delantero.id, 'delantero');
     }
     function submitForm(event) {
             event.preventDefault();
@@ -141,11 +144,11 @@
             const data = {
                 nombre_equipo: form.nombre_equipo.value,
                 puntaje: form.puntaje.value,
-                arquero_id: form.arquero.value,
-                defensa1_id: form.defensa1.value,
-                defensa2_id: form.defensa2.value,
-                medio_id: form.medio.value,
-                delantero_id: form.delantero.value
+                arquero_id: form.arquero_id.value,
+                defensa1_id: form.defensa1_id.value,
+                defensa2_id: form.defensa2_id.value,
+                medio_id: form.medio_id.value,
+                delantero_id: form.delantero_id.value
             };
             
             fetch("http://localhost:5000/guardar_equipo", {
