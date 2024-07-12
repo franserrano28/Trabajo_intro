@@ -35,49 +35,46 @@
         </select>
         <br>
     </form>
-    <script>
-        function response_received(response) {
-            console.log(response)
-            return response.json()
-        }
-        
-        function request_error(error) {
-            console.log(error)
-        }
+   <script>
+    function response_received(response) {
+        console.log('Response received:', response);
+        return response.json();
+    }
 
-        function fillForm(jugadores, position) {
-            //Busca el select
-            const select = document.querySelector(`select[name="${position}"]`);
+    function request_error(error) {
+        console.error('Request failed:', error);
+    }
 
-            // Limpiar opciones existentes para que no se repita ninguna
-            select.innerHTML = '';
+    function fillForm(jugadores, position, defaultText) {
+        const select = document.querySelector(`select[name="${position}"]`);
+        select.innerHTML = '';
 
-            
-            for (let i = 0; i < jugadores.length; i++) {
-                const jugador = jugadores[i];
-                const option = document.createElement("option");
-                option.value = jugador.id;
-                option.textContent = jugador.nombre_jugador;
-                select.append(option);
-            }
-        }
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = defaultText;
+        select.append(defaultOption);
 
-        function parse_data(jugadores) {
-            console.log(jugadores);
+        jugadores.forEach(jugador => {
+            const option = document.createElement("option");
+            option.value = jugador.id;
+            option.textContent = jugador.nombre;
+            select.append(option);
+        });
+    }
 
-            // Llenar cada select con jugadores según su posición, el (j => j.posicion === "pos") es como decir para cada elemento del array verifica si j.posicio es igual a pos
-            fillForm(jugadores.filter(j => j.posicion === "arq"), "arquero");
-            fillForm(jugadores.filter(j => j.posicion === "def"), "defensor1");
-            fillForm(jugadores.filter(j => j.posicion === "def"), "defensor2");
-            fillForm(jugadores.filter(j => j.posicion === "med"), "mediocampista");
-            fillForm(jugadores.filter(j => j.posicion === "del"), "delantero");
-        }
+    function parse_data(jugadores) {
+        console.log('Jugadores:', jugadores);
+        fillForm(jugadores.filter(j => j.posicion === "arq"), "arquero", "Seleccione Arquero");
+        fillForm(jugadores.filter(j => j.posicion === "def"), "defensor1", "Seleccione Defensor 1");
+        fillForm(jugadores.filter(j => j.posicion === "def"), "defensor2", "Seleccione Defensor 2");
+        fillForm(jugadores.filter(j => j.posicion === "med"), "mediocampista", "Seleccione Mediocampista");
+        fillForm(jugadores.filter(j => j.posicion === "del"), "delantero", "Seleccione Delantero");
+    }
 
-
-        fetch("http://localhost:5000/jugadores")
-            .then(response_received)
-            .then(parse_data)
-            .catch(request_error)
-    </script>
+    fetch("http://localhost:5000/jugadores")
+        .then(response_received)
+        .then(parse_data)
+        .catch(request_error);
+</script>
 </body>
 </html>
