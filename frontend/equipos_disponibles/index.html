@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipos Disponibles</title>
+</head>
+<body>
+<div id="equipos-container">
+    <!-- Aquí se insertarán dinámicamente los equipos y botones -->
+</div>
+
+
+<script>
+    function fetchEquipos() {
+        fetch("http://localhost:5000/equipos")
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById("equipos-container");
+                container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
+
+                data.forEach(equipo => {
+                    // Crear elemento para mostrar el nombre y puntaje del equipo
+                    const equipoItem = document.createElement("div");
+                    equipoItem.textContent = `Equipo: ${equipo.nombre}, Puntaje: ${equipo.puntaje}`;
+
+                    // Crear botón "Eliminar" para cada equipo
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = "Eliminar";
+                    deleteButton.addEventListener("click", function() {
+                        eliminarEquipo(equipo.id); // Pasar el ID del equipo al eliminar
+                    });
+
+                    // Agregar el botón al elemento del equipo
+                    equipoItem.appendChild(deleteButton);
+
+                    // Agregar el elemento del equipo al contenedor principal
+                    container.appendChild(equipoItem);
+                });
+            })
+            .catch(error => {
+                console.error("Error al obtener equipos:", error);
+            });
+    }
+    fetchEquipos(); // Llamar a fetchEquipos al cargar la página
+    function eliminarEquipo(equipoId) {
+        // Hacer la solicitud DELETE usando fetch
+        fetch(`http://localhost:5000/eliminar_equipo/${equipoId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Equipo eliminado:", data);
+                alert("Equipo eliminado correctamente");
+                fetchEquipos(); // Actualizar la lista de equipos después de eliminar uno
+            })
+            .catch(error => {
+                console.error("Error eliminando equipo:", error);
+                alert("Error al eliminar el equipo");
+            });
+    }
+
+
+</script>
+</body>
+</html>
