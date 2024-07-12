@@ -111,6 +111,40 @@ def add_equipo():
         print('Error:', error)
         return jsonify({'message': 'Internal server error'}), 500
 
+@app.route('/eliminar_equipo/<int:equipo_id>', methods=['DELETE'])
+def eliminar_equipo(equipo_id):
+    try:
+        equipo = Equipo.query.get_or_404(equipo_id)
+        db.session.delete(equipo)
+        db.session.commit()
+        return jsonify({'message': 'Equipo eliminado correctamente'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'No se pudo eliminar el equipo', 'message': str(e)}), 500
+
+
+@app.route('/equipos/<int:equipo_id>', methods=['PUT'])
+def editar_equipo(equipo_id):
+    try:
+        data = request.json
+        equipo = Equipo.query.get_or_404(equipo_id)
+
+        # Actualizar datos del equipo
+        equipo.nombre_equipo = data.get('nombre_equipo', equipo.nombre_equipo)
+        equipo.puntaje = data.get('puntaje', equipo.puntaje)
+        # Actualizar jugadores asociados si es necesario
+        equipo.arquero_id = data.get('arquero_id', equipo.arquero_id)
+        equipo.defensa1_id = data.get('defensa1_id', equipo.defensa1_id)
+        equipo.defensa2_id = data.get('defensa2_id', equipo.defensa2_id)
+        equipo.medio_id = data.get('medio_id', equipo.medio_id)
+        equipo.delantero_id = data.get('delantero_id', equipo.delantero_id)
+
+        db.session.commit()
+
+        return jsonify({'message': 'Equipo actualizado correctamente'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     print('Starting server...')
