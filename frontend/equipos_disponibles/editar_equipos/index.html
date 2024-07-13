@@ -7,7 +7,7 @@
 <body>
 <header>
     <img src="../Encabezado_DreamTeam.png" alt="Logo Dream team">
-    <a href="#" target="_blank">¿Que es DREAM TEAM?</a>
+    <a href="#" target="_blank">Que es DREAM TEAM?</a>
 </header>
 <main>
     <div class="estadio">
@@ -148,7 +148,6 @@
 
         const mediocampistaSelect = document.querySelector('select[name="mediocampista"]');
         mediocampistaSelect.addEventListener('change', () => setPlayerImage(mediocampistaSelect, mediocampistaImg));
-      
 
         const delanteroSelect = document.querySelector('select[name="delantero"]');
         delanteroSelect.addEventListener('change', () => setPlayerImage(delanteroSelect, delanteroImg));
@@ -162,7 +161,16 @@
         const nombreEquipoInput = document.querySelector('input[name="nombre_equipo"]');
         nombreEquipoInput.value = equipoData.nombre_equipo;
 
-
+        const arqueroSelect = document.querySelector('select[name="arquero"]');
+        arqueroSelect.value = equipoData.arquero_id;
+        const defensor1Select = document.querySelector('select[name="defensor1"]');
+        defensor1Select.value = equipoData.defensor_1_id;
+        const defensor2Select = document.querySelector('select[name="defensor2"]');
+        defensor2Select.value = equipoData.defensor_2_id;
+        const mediocampistaSelect = document.querySelector('select[name="mediocampista"]');
+        mediocampistaSelect.value = equipoData.mediocampista_id;
+        const delanteroSelect = document.querySelector('select[name="delantero"]');
+        delanteroSelect.value = equipoData.delantero_id;
 
         // Función para establecer la imagen de un jugador según su ID
         function setPlayerImage(imageElement, playerId) {
