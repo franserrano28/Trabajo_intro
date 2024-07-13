@@ -11,14 +11,17 @@ header{
     justify-content: space-between;
     padding-bottom: 2%;
 }
-header img{
-    color: white;
-    width: 35%;
+header .logo-link {
+    width: 35%; /* Adjust the width as needed */
     margin-left: 10%;
-    border-radius: 100px;
     margin-top: 2%;
 }
-header a{
+header img{
+    color: white;
+    width: 100%;
+    border-radius: 100px;
+}
+header .promiedos{
     color: white;
     text-decoration: none;
     align-items: center;
@@ -26,7 +29,7 @@ header a{
     margin-right: 10%;
     margin-top: 2%;
 }
-header a:hover{
+header .promiedos:hover{
     color:aqua;
 }
 .estadio {
