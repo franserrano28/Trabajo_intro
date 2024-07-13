@@ -45,14 +45,14 @@ def get_equipos():
         for equipo in equipos:
             equipo_data = {
                 'id': equipo.id,
-                'nombre': equipo.nombre_equipo,
+                'nombre_equipo': equipo.nombre_equipo,
                 'puntaje': equipo.puntaje,
-                'fecha creacion': equipo.fecha_creacion,
-                'arquero id': equipo.arquero_id,
-                'defensor 1 id': equipo.defensa1_id,
-                'defensor 2 id': equipo.defensa2_id,
-                'mediocampista id': equipo.medio_id,
-                'delantero id': equipo.delantero_id,
+                'fecha_creacion': equipo.fecha_creacion,
+                'arquero_id': equipo.arquero_id,
+                'defensor_1_id': equipo.defensor_1_id,
+                'defensor_2_id': equipo.defensor_2_id,
+                'mediocampista_id': equipo.medio_id,
+                'delantero_id': equipo.delantero_id,
             }
             equipos_data.append(equipo_data)
         return jsonify(equipos_data)
@@ -69,14 +69,14 @@ def get_equipo(id_equipos):
 
         equipo_data = {
                 'id': equipo.id,
-                'nombre': equipo.nombre_equipo,
+                'nombre_equipo': equipo.nombre_equipo,
                 'puntaje': equipo.puntaje,
-                'fecha creacion': equipo.fecha_creacion,
-                'arquero id': equipo.arquero_id,
-                'defensor 1 id': equipo.defensa1_id,
-                'defensor 2 id': equipo.defensa2_id,
-                'mediocampista id': equipo.medio_id,
-                'delantero id': equipo.delantero_id,
+                'fecha_creacion': equipo.fecha_creacion,
+                'arquero_id': equipo.arquero_id,
+                'defensor_1_id': equipo.defensor_1_id,
+                'defensor_2_id': equipo.defensor_2_id,
+                'mediocampista_id': equipo.medio_id,
+                'delantero_id': equipo.delantero_id,
             }
         return jsonify(equipo_data)
     except Exception as e:
@@ -93,8 +93,8 @@ def nuevo_equipo():
         nombre_equipo = data.get('nombre_equipo')
         puntaje = data.get('puntaje')
         arquero_id = data.get('arquero_id')
-        defensa1_id = data.get('defensa1_id')
-        defensa2_id = data.get('defensa2_id')
+        defensor_1_id = data.get('defensor_1_id')
+        defensor_2_id = data.get('defensor_2_id')
         medio_id = data.get('medio_id')
         delantero_id = data.get('delantero_id')
 
@@ -103,8 +103,8 @@ def nuevo_equipo():
             nombre_equipo=nombre_equipo,
             puntaje=puntaje,
             arquero_id=arquero_id,
-            defensa1_id=defensa1_id,
-            defensa2_id=defensa2_id,
+            defensor_1_id=defensor_1_id,
+            defensor_2_id=defensor_2_id,
             medio_id=medio_id,
             delantero_id=delantero_id
         )
@@ -120,26 +120,14 @@ def nuevo_equipo():
                 'puntaje': nuevo_equipo.puntaje,
                 'fecha_creacion': nuevo_equipo.fecha_creacion,
                 'arquero_id': nuevo_equipo.arquero_id,
-                'defensa1_id': nuevo_equipo.defensa1_id,
-                'defensa2_id': nuevo_equipo.defensa2_id,
+                'defensor_1_id': nuevo_equipo.defensor_1_id,
+                'defensor_2_id': nuevo_equipo.defensor_2_id,
                 'medio_id': nuevo_equipo.medio_id,
                 'delantero_id': nuevo_equipo.delantero_id
             }
         }), 201
     except Exception as error:
         return jsonify({'message': 'Internal server error'}), 500
-
-
-@app.route('/eliminar_equipo/<equipo_id>', methods=['DELETE'])
-def eliminar_equipo(equipo_id):
-    try:
-        equipo = Equipo.query.get_or_404(equipo_id) # Intenta obtener el equipo con el ID proporcionado o devuelve un error 404 si no existe
-        db.session.delete(equipo)  # Elimina el equipo de la sesión de la base de datos
-        db.session.commit()  # Confirma los cambios en la base de datos
-        return jsonify({'message': 'Equipo eliminado correctamente'}), 200
-    except Exception as e:
-        db.session.rollback() # En caso de error, realiza un rollback para deshacer los cambios pendientes en la sesión de la base de datos
-        return jsonify({'error': 'No se pudo eliminar el equipo', 'message': str(e)}), 500 # Devuelve una respuesta JSON indicando que no se pudo eliminar el equipo y el mensaje de error específico
 
 
 @app.route('/equipos/<equipo_id>', methods=['PUT'])
@@ -152,9 +140,9 @@ def editar_equipo(equipo_id):
         equipo.nombre_equipo = data.get('nombre_equipo', equipo.nombre_equipo)
         equipo.puntaje = data.get('puntaje', equipo.puntaje)
         equipo.arquero_id = data.get('arquero_id', equipo.arquero_id)
-        equipo.defensa1_id = data.get('defensa1_id', equipo.defensa1_id)
-        equipo.defensa2_id = data.get('defensa2_id', equipo.defensa2_id)
-        equipo.medio_id = data.get('medio_id', equipo.medio_id)
+        equipo.defensor_1_id = data.get('defensor_1_id', equipo.defensor_1_id)
+        equipo.defensor_2_id = data.get('defensor_2_id', equipo.defensor_2_id)
+        equipo.medio_id = data.get('mediocampista_id', equipo.medio_id)
         equipo.delantero_id = data.get('delantero_id', equipo.delantero_id)
 
         db.session.commit() # Confirmar los cambios en la base de datos
@@ -162,6 +150,18 @@ def editar_equipo(equipo_id):
         return jsonify({'message': 'Equipo actualizado correctamente'}), 200 # Devolver mensaje de éxito con código HTTP 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500 # Devolver mensaje de error con código HTTP 500 en caso de excepción
+
+
+@app.route('/eliminar_equipo/<equipo_id>', methods=['DELETE'])
+def eliminar_equipo(equipo_id):
+    try:
+        equipo = Equipo.query.get_or_404(equipo_id) # Intenta obtener el equipo con el ID proporcionado o devuelve un error 404 si no existe
+        db.session.delete(equipo)  # Elimina el equipo de la sesión de la base de datos
+        db.session.commit()  # Confirma los cambios en la base de datos
+        return jsonify({'message': 'Equipo eliminado correctamente'}), 200
+    except Exception as e:
+        db.session.rollback() # En caso de error, realiza un rollback para deshacer los cambios pendientes en la sesión de la base de datos
+        return jsonify({'error': 'No se pudo eliminar el equipo', 'message': str(e)}), 500 # Devuelve una respuesta JSON indicando que no se pudo eliminar el equipo y el mensaje de error específico
 
 
 if __name__ == '__main__':

@@ -4,238 +4,247 @@
     <title>Dream Team</title>
     <link rel="stylesheet" href="style.css">
 </head>
-    <body>
-        <header>
-            <img src="../Encabezado_DreamTeam.png" alt="Logo Dream team">
-            <a href="#" target="_blank">¿Que es DREAM TEAM?</a>
-        </header>
-        <main>
-            <div class="estadio">
-                <div class="grada">
-                    <div class="campo">
-                        <div class="contenedor-porteria">
-                            <div class="porteria porteria-izquierda"></div>
+<body>
+<header>
+    <img src="../Encabezado_DreamTeam.png" alt="Logo Dream team">
+    <a href="#" target="_blank">¿Que es DREAM TEAM?</a>
+</header>
+<main>
+    <div class="estadio">
+        <div class="grada">
+            <div class="campo">
+                <div class="contenedor-porteria">
+                    <div class="porteria porteria-izquierda"></div>
+                </div>
+                <div class="izquierda">
+                    <div class="corner corner-superior"></div>
+                    <div class="area">
+                        <div class="area-pequena">
                         </div>
-                        <div class="izquierda">
-                            <div class="corner corner-superior"></div>
-                            <div class="area">
-                                <div class="area-pequena">
-                                </div>
-                                <div class="punto-penalty"></div>
-                                <div class="arco"></div>
-                            </div>
-                            <div class="arquero">
-                                <img src="" alt="Arquero" class="tarjeta_jugador">
-                            </div>
-                            <div class="defensores">
-                                <div class="defensor">
-                                    <img src="" alt="Defensor" class="tarjeta_jugador">
-                                </div>
-                                <div class="defensor">
-                                    <img src="" alt="Defensor" class="tarjeta_jugador">
-                                </div>
-                            </div>
-                            <div class="corner corner-inferior"></div>
+                        <div class="punto-penalty"></div>
+                        <div class="arco"></div>
+                    </div>
+                    <div class="arquero">
+                        <img src="" alt="Arquero" class="tarjeta_jugador">
+                    </div>
+                    <div class="defensores">
+                        <div class="defensor">
+                            <img src="" alt="Defensor" class="tarjeta_jugador">
                         </div>
-                        <div class="derecha">
-                            <div class="corner corner-superior"></div>
-                            <div class="area">
-                                <div class="area-pequena">
-                                </div>
-                                <div class="punto-penalty"></div>
-                                <div class="arco"></div>
-                            </div>
-                            <div class="mediocampista">
-                                <img src="" alt="Mediocampista" class="tarjeta_jugador">
-                            </div>
-                            <div class="delantero">
-                                <img src="" alt="Delantero" class="tarjeta_jugador">
-                            </div>
-                            <div class="corner corner-inferior"></div>
-                        </div>
-                        <div class="contenedor-porteria">
-                            <div class="porteria porteria-derecha"></div>
+                        <div class="defensor">
+                            <img src="" alt="Defensor" class="tarjeta_jugador">
                         </div>
                     </div>
+                    <div class="corner corner-inferior"></div>
+                </div>
+                <div class="derecha">
+                    <div class="corner corner-superior"></div>
+                    <div class="area">
+                        <div class="area-pequena">
+                        </div>
+                        <div class="punto-penalty"></div>
+                        <div class="arco"></div>
+                    </div>
+                    <div class="mediocampista">
+                        <img src="" alt="Mediocampista" class="tarjeta_jugador">
+                    </div>
+                    <div class="delantero">
+                        <img src="" alt="Delantero" class="tarjeta_jugador">
+                    </div>
+                    <div class="corner corner-inferior"></div>
+                </div>
+                <div class="contenedor-porteria">
+                    <div class="porteria porteria-derecha"></div>
                 </div>
             </div>
-        </main>
-        <footer>
-            <form id="team-form" onsubmit="submitForm(event)">
-                <label class="nombre_equipo">Nombre del Equipo:</label>
-                <input type="text" name="nombre_equipo" required>
-                <div>
-                    <label>Arquero:</label>
-                    <select name="arquero" required></select>
+        </div>
+    </div>
+</main>
+<footer>
+    <form id="team-form" onsubmit="submitForm(event)">
+        <label class="nombre_equipo">Nombre del Equipo:</label>
+        <input type="text" name="nombre_equipo" required>
+        <div>
+            <label>Arquero:</label>
+            <select name="arquero" required></select>
 
-                    <label>Defensor 1:</label>
-                    <select name="defensor1" required></select>
+            <label>Defensor 1:</label>
+            <select name="defensor1" required></select>
 
-                    <label>Defensor 2:</label>
-                    <select name="defensor2" required></select>
+            <label>Defensor 2:</label>
+            <select name="defensor2" required></select>
 
-                    <label>Mediocampista:</label>
-                    <select name="mediocampista" required></select>
+            <label>Mediocampista:</label>
+            <select name="mediocampista" required></select>
 
-                    <label>Delantero:</label>
-                    <select name="delantero" required></select>
-                </div>
-                <button type="submit">Enviar</button>
-            </form>
-        </footer>
-        <script>
-            let jugadores = [];
+            <label>Delantero:</label>
+            <select name="delantero" required></select>
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
+</footer>
+<script>
+    let jugadores = [];
 
-            function response_received(response) {
-                console.log('Response received:', response);
-                return response.json();
-            }
+    function response_received(response) {
+        console.log('Response received:', response);
+        return response.json();
+    }
 
-            function request_error(error) {
-                console.error('Request failed:', error);
-            }
+    function request_error(error) {
+        console.error('Request failed:', error);
+    }
 
-            function fillForm(jugadores, position) {
-                const select = document.querySelector(`select[name="${position}"]`);
-                select.innerHTML = '';
+    function fillForm(jugadores, position) {
+        const select = document.querySelector(`select[name="${position}"]`);
+        select.innerHTML = '';
 
-                jugadores.forEach(jugador => {
-                    const option = document.createElement("option");
-                    option.value = jugador.id;
-                    option.textContent = jugador.nombre;
-                    select.append(option);
-                });
-            }
+        jugadores.forEach(jugador => {
+            const option = document.createElement("option");
+            option.value = jugador.id;
+            option.textContent = jugador.nombre;
+            select.append(option);
+        });
+    }
 
-            //Funcion encargada de filtrar los distintos jugadores por select y las imagenes en su img usando su class
-            function parse_data(jugadoresData) {
-                jugadores = jugadoresData;
-                console.log('Jugadores:', jugadores);
+    function getImageUrl(playerId) {
+        return `imagenes/${playerId}.png`;
+    }
 
-                fillForm(jugadores.filter(j => j.posicion === "arq"), "arquero");
-                fillForm(jugadores.filter(j => j.posicion === "def"), "defensor1");
-                fillForm(jugadores.filter(j => j.posicion === "def"), "defensor2");
-                fillForm(jugadores.filter(j => j.posicion === "med"), "mediocampista");
-                fillForm(jugadores.filter(j => j.posicion === "del"), "delantero");
+    function setPlayerImage(selectElement, imageElement) {
+        const playerId = selectElement.value;
+        const imageUrl = getImageUrl(playerId);
+        imageElement.src = imageUrl;
+    }
 
+    //Funcion encargada de filtrar los distintos jugadores por select y las imagenes en su img usando su class
+    function parse_data(jugadoresData) {
+        jugadores = jugadoresData;
+        console.log('Jugadores:', jugadores);
 
-                const arqueroImg = document.querySelector('.arquero img');
-                //nth-child() se usa en css para determinar de que elemento de la clase hablamos
-                const defensor1Img = document.querySelector('.defensor:nth-child(1) img');
-                const defensor2Img = document.querySelector('.defensor:nth-child(2) img');
-                const mediocampistaImg = document.querySelector('.mediocampista img');
-                const delanteroImg = document.querySelector('.delantero img');
-
-                function getImageUrl(playerId) {
-                    return `imagenes/${playerId}.png`;
-                }
-
-
-                function setPlayerImage(selectElement, imageElement) {
-                    const playerId = selectElement.value;
-                    const imageUrl = getImageUrl(playerId);
-                    imageElement.src = imageUrl;
-                }
-
-                // Creo los distintos select y ademas gracias a addEventListener cambia la imagen apenas cambie el jugador
-                const arqueroSelect = document.querySelector('select[name="arquero"]');
-                arqueroSelect.addEventListener('change', () => setPlayerImage(arqueroSelect, arqueroImg));
-
-                const defensor1Select = document.querySelector('select[name="defensor1"]');
-                defensor1Select.addEventListener('change', () => setPlayerImage(defensor1Select, defensor1Img));
-
-                const defensor2Select = document.querySelector('select[name="defensor2"]');
-                defensor2Select.addEventListener('change', () => setPlayerImage(defensor2Select, defensor2Img));
-
-                const mediocampistaSelect = document.querySelector('select[name="mediocampista"]');
-                mediocampistaSelect.addEventListener('change', () => setPlayerImage(mediocampistaSelect, mediocampistaImg));
-
-                const delanteroSelect = document.querySelector('select[name="delantero"]');
-                delanteroSelect.addEventListener('change', () => setPlayerImage(delanteroSelect, delanteroImg));
-
-                //imagen de primero en la lista
-                setPlayerImage(arqueroSelect, arqueroImg);
-                setPlayerImage(defensor1Select, defensor1Img);
-                setPlayerImage(defensor2Select, defensor2Img);
-                setPlayerImage(mediocampistaSelect, mediocampistaImg);
-                setPlayerImage(delanteroSelect, delanteroImg);
-            }
-            
-            //Funcion que llena el formulario con los jugadores por defecto que serian los del equipo y el nombre del equipo
-            function populateForm(equipoData) {
-                equipo = equipoData;
-                console.log('Equipo:', equipo);
-
-                const nombreEquipoInput = document.querySelector('input[name="nombre_equipo"]');
-                nombreEquipoInput.value = equipo.nombre_equipo; 
-
-                document.querySelector('input[name="nombre_equipo"]').value = equipo.nombre_equipo;
-                document.querySelector('select[name="arquero"]').value = equipo.arquero_id;
-                document.querySelector('select[name="defensor1"]').value = equipo.defensor1_id;
-                document.querySelector('select[name="defensor2"]').value = equipo.defensor2_id;
-                document.querySelector('select[name="mediocampista"]').value = equipo.mediocampista_id;
-                document.querySelector('select[name="delantero"]').value = equipo.delantero_id;
-            }
-
-            function submitForm(event) {
-                //Evita la accion predeterminada de la subida del formulario asi podemos controlarla
-                event.preventDefault();
-                const form = event.target;
-
-                const arquero = jugadores.find(j => j.id == form.arquero.value);
-                const defensa1 = jugadores.find(j => j.id == form.defensor1.value);
-                const defensa2 = jugadores.find(j => j.id == form.defensor2.value);
-                const medio = jugadores.find(j => j.id == form.mediocampista.value);
-                const delantero = jugadores.find(j => j.id == form.delantero.value);
-
-                const puntaje = (arquero.puntaje + defensa1.puntaje + defensa2.puntaje + medio.puntaje + delantero.puntaje) / 5;
-
-                const equipo = {
-                    nombre_equipo: form.nombre_equipo.value,
-                    arquero_id: arquero.id,
-                    defensa1_id: defensa1.id,
-                    defensa2_id: defensa2.id,
-                    medio_id: medio.id,
-                    delantero_id: delantero.id,
-                    puntaje: puntaje
-                };
-
-                function success(data) {
-                    console.log(data);
-                    alert("Equipo creado con exito!");
-                    window.location.href = "http://localhost:8000/equipos_disponibles";
-                }
-
-            
-            let parametros=window.location.search;
-            let id= new URLSearchParams(parametros).get("id");
+        fillForm(jugadores.filter(j => j.posicion === "arq"), "arquero");
+        fillForm(jugadores.filter(j => j.posicion === "def"), "defensor1");
+        fillForm(jugadores.filter(j => j.posicion === "def"), "defensor2");
+        fillForm(jugadores.filter(j => j.posicion === "med"), "mediocampista");
+        fillForm(jugadores.filter(j => j.posicion === "del"), "delantero");
 
 
-            fetch(`http://localhost:5000/equipos/${equipo.id}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(equipo)
-                })
-                    .then(response_received)
-                    .then(success)
-                    .catch(request_error);
-            }
-            
-            //Promise.all se asegura de que se cumplan los dos fetch antes de proceder
-            Promise.all([
-                fetch("http://localhost:5000/jugadores")
-                    .then(response_received)
-                    .then(parse_data)
-                    .catch(request_error),
+        const arqueroImg = document.querySelector('.arquero img');
+        //nth-child() se usa en css para determinar de que elemento de la clase hablamos
+        const defensor1Img = document.querySelector('.defensor:nth-child(1) img');
+        const defensor2Img = document.querySelector('.defensor:nth-child(2) img');
+        const mediocampistaImg = document.querySelector('.mediocampista img');
+        const delanteroImg = document.querySelector('.delantero img');
 
-                fetch(`http://localhost:5000/equipos/${id}`)
-                    .then(response_received)
-                    .then(populateForm)
-                    .catch(request_error)
-            ]);
+        // Creo los distintos select y ademas gracias a addEventListener cambia la imagen apenas cambie el jugador
+        const arqueroSelect = document.querySelector('select[name="arquero"]');
+        arqueroSelect.addEventListener('change', () => setPlayerImage(arqueroSelect, arqueroImg));
 
-        </script>
-    </body>
+        const defensor1Select = document.querySelector('select[name="defensor1"]');
+        defensor1Select.addEventListener('change', () => setPlayerImage(defensor1Select, defensor1Img));
+
+        const defensor2Select = document.querySelector('select[name="defensor2"]');
+        defensor2Select.addEventListener('change', () => setPlayerImage(defensor2Select, defensor2Img));
+
+        const mediocampistaSelect = document.querySelector('select[name="mediocampista"]');
+        mediocampistaSelect.addEventListener('change', () => setPlayerImage(mediocampistaSelect, mediocampistaImg));
+      
+
+        const delanteroSelect = document.querySelector('select[name="delantero"]');
+        delanteroSelect.addEventListener('change', () => setPlayerImage(delanteroSelect, delanteroImg));
+
+    }
+
+    //Funcion que llena el formulario con los jugadores por defecto que serian los del equipo y el nombre del equipo
+    function populateForm(equipoData) {
+        console.log('Equipo:', equipoData);
+
+        const nombreEquipoInput = document.querySelector('input[name="nombre_equipo"]');
+        nombreEquipoInput.value = equipoData.nombre_equipo;
+
+
+
+        // Función para establecer la imagen de un jugador según su ID
+        function setPlayerImage(imageElement, playerId) {
+            const imageUrl = `imagenes/${playerId}.png`;
+            imageElement.src = imageUrl;
+        }
+
+        // Obtener imágenes de los jugadores del equipo
+        const arqueroImg = document.querySelector('.arquero img');
+        const defensor1Img = document.querySelector('.defensor:nth-child(1) img');
+        const defensor2Img = document.querySelector('.defensor:nth-child(2) img');
+        const mediocampistaImg = document.querySelector('.mediocampista img');
+        const delanteroImg = document.querySelector('.delantero img');
+
+        // Establecer imágenes de los jugadores del equipo
+        setPlayerImage(arqueroImg, equipoData.arquero_id);
+        setPlayerImage(defensor1Img, equipoData.defensor_1_id);
+        setPlayerImage(defensor2Img, equipoData.defensor_2_id);
+        setPlayerImage(mediocampistaImg, equipoData.mediocampista_id);
+        setPlayerImage(delanteroImg, equipoData.delantero_id);
+
+    }
+
+    function submitForm(event) {
+        //Evita la accion predeterminada de la subida del formulario asi podemos controlarla
+        event.preventDefault();
+        const form = event.target;
+
+        const arquero = jugadores.find(j => j.id == form.arquero.value);
+        const defensa1 = jugadores.find(j => j.id == form.defensor1.value);
+        const defensa2 = jugadores.find(j => j.id == form.defensor2.value);
+        const medio = jugadores.find(j => j.id == form.mediocampista.value);
+        const delantero = jugadores.find(j => j.id == form.delantero.value);
+
+        const puntaje = (arquero.puntaje + defensa1.puntaje + defensa2.puntaje + medio.puntaje + delantero.puntaje) / 5;
+
+        const equipo = {
+            nombre_equipo: form.nombre_equipo.value,
+            arquero_id: arquero.id,
+            defensor_1_id: defensa1.id,
+            defensor_2_id: defensa2.id,
+            mediocampista_id: medio.id,
+            delantero_id: delantero.id,
+            puntaje: puntaje
+        };
+
+        function success(data) {
+            console.log(data);
+            alert("Equipo actualizado!");
+            window.location.href = "http://localhost:8000/equipos_disponibles";
+        }
+
+
+        fetch(`http://localhost:5000/equipos/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(equipo)
+        })
+            .then(response_received)
+            .then(success)
+            .catch(request_error);
+    }
+
+    let parametros=window.location.search;
+    let id= new URLSearchParams(parametros).get("id");
+    //console.log(parametros);
+
+    //Promise.all se asegura de que se cumplan los dos fetch antes de proceder
+    Promise.all([
+        fetch("http://localhost:5000/jugadores")
+            .then(response_received)
+            .then(parse_data)
+            .catch(request_error),
+
+        fetch(`http://localhost:5000/equipos/${id}`)
+            .then(response_received)
+            .then(populateForm)
+            .catch(request_error)
+    ]);
+
+</script>
+</body>
 </html>
