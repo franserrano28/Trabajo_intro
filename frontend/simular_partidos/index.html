@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <select name="local" required></select>
+    <select name="visitante" required></select>
+    <button id="submit">Jugar</button>
+
+    <script>
+        function response_received(response) {
+            console.log('Response received:', response);
+            return response.json();
+        }
+
+        function request_error(error) {
+            console.error('Request failed:', error);
+        }
+        
+        function fillForm(equipos, position) {
+            const select = document.querySelector(`select[name="${position}"]`);
+            select.innerHTML = '';
+
+            equipos.forEach(equipo => {
+                const option = document.createElement("option");
+                option.value = equipo.id;
+                option.textContent = equipo.nombre_equipo;
+                select.append(option);
+            });
+        }
+
+        function jugarPartido(event){
+            event.preventDefault();
+
+            const local = document.querySelector('select[name="local"]').value;
+            const visitante = document.querySelector('select[name="visitante"]').value;
+
+            const partido = {
+                local: local,
+                visitante: visitante
+            };
+            
+            fetch("http://localhost:5000/crear_partido", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(partido)
+            })
+            .then(response_received)
+            .then(data => {
+                console.log('Partido created:', data);
+                alert("Iniciando partido...");
+            })
+            .catch(request_error);
+        }
+
+        function parse_data(data){
+            const equipos = data;
+
+            fillForm(equipos, "local");
+            fillForm(equipos, "visitante");
+        }
+
+        document.getElementById("submit").addEventListener("click", jugarPartido);
+
+        fetch("http://localhost:5000/equipos")
+            .then(response_received)
+            .then(parse_data)
+            .catch(request_error);
+    </script>
+</body>
+</html>
