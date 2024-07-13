@@ -69,11 +69,7 @@
     fetchEquipos(); // Llamar a fetchEquipos al cargar la página
 
     function editEquipo(id) {
-        // Construir la URL de la página HTML a la que quieres redirigir
-        const url = `/editar_equipos/index.html`;  // Ajusta la ruta y el nombre del archivo HTML según tu estructura
-
-        // Redirigir a la nueva página
-        window.location.href = url;
+        window.location.href = `http://localhost:8000/equipos_disponibles/editar_equipo?id=${id}`;
     }
 
     function eliminarEquipo(equipoId) {
