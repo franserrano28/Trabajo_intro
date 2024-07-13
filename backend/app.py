@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from models import db, Equipo, Jugador, Partido, Equipo_rivales
 
-
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -20,8 +19,8 @@ def hello_world():
 @app.route('/jugadores', methods=['GET'])
 def get_jugadores():
     try:
-        jugadores = Jugador.query.all()
-        jugadores_data = []
+        jugadores = Jugador.query.all() #trae todos los jugadores
+        jugadores_data = [] #arma lista
         for jugador in jugadores:
             jugador_data = {
                 'id': jugador.id,
@@ -31,8 +30,9 @@ def get_jugadores():
                 'edad': jugador.edad,
                 'puntaje': jugador.puntaje
             }
-            jugadores_data.append(jugador_data)
-        return jsonify(jugadores_data)
+            jugadores_data.append(jugador_data) #agrega el diccionario del jugador a la lista
+        return jsonify(jugadores_data) #te lo convierte en json
+
     except Exception as e:
         return jsonify({'error': 'Internal server error'})
 
@@ -60,11 +60,34 @@ def get_equipos():
         return jsonify({'error': 'Internal server error'})
 
 
-@app.route('/guardar_equipo', methods=['POST'])
-def add_equipo():
+@app.route('/equipos/<id_equipos>', methods=['GET'])
+def get_equipo(id_equipos):
     try:
-        # Obtener datos del cuerpo de la solicitud JSON
-        data = request.json
+        equipo = Equipo.query.get(id_equipos)  # Obtener un equipo por su ID
+        if equipo is None:
+            return jsonify({'error': 'Equipo not found'}), 404
+
+        equipo_data = {
+                'id': equipo.id,
+                'nombre': equipo.nombre_equipo,
+                'puntaje': equipo.puntaje,
+                'fecha creacion': equipo.fecha_creacion,
+                'arquero id': equipo.arquero_id,
+                'defensor 1 id': equipo.defensa1_id,
+                'defensor 2 id': equipo.defensa2_id,
+                'mediocampista id': equipo.medio_id,
+                'delantero id': equipo.delantero_id,
+            }
+        return jsonify(equipo_data)
+    except Exception as e:
+        print(traceback.format_exc())  # Imprimir el error completo en la consola
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.route('/guardar_equipo', methods=['POST'])
+def nuevo_equipo():
+    try:
+        data = request.json # Obtener datos del cuerpo de la solicitud JSON
 
         # Extraer información del JSON recibido
         nombre_equipo = data.get('nombre_equipo')
@@ -86,11 +109,8 @@ def add_equipo():
             delantero_id=delantero_id
         )
 
-        # Añadir el nuevo equipo a la sesión de la base de datos
-        db.session.add(nuevo_equipo)
-
-        # Confirmar (commit) los cambios en la base de datos
-        db.session.commit()
+        db.session.add(nuevo_equipo) # Añadir el nuevo equipo a la sesión de la base de datos
+        db.session.commit()# Confirmar (commit) los cambios en la base de datos
 
         # Devolver una respuesta con los detalles del equipo creado
         return jsonify({
@@ -107,43 +127,41 @@ def add_equipo():
             }
         }), 201
     except Exception as error:
-        # Manejar errores y devolver un mensaje de error
-        print('Error:', error)
         return jsonify({'message': 'Internal server error'}), 500
 
-@app.route('/eliminar_equipo/<int:equipo_id>', methods=['DELETE'])
+
+@app.route('/eliminar_equipo/<equipo_id>', methods=['DELETE'])
 def eliminar_equipo(equipo_id):
     try:
-        equipo = Equipo.query.get_or_404(equipo_id)
-        db.session.delete(equipo)
-        db.session.commit()
+        equipo = Equipo.query.get_or_404(equipo_id) # Intenta obtener el equipo con el ID proporcionado o devuelve un error 404 si no existe
+        db.session.delete(equipo)  # Elimina el equipo de la sesión de la base de datos
+        db.session.commit()  # Confirma los cambios en la base de datos
         return jsonify({'message': 'Equipo eliminado correctamente'}), 200
     except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': 'No se pudo eliminar el equipo', 'message': str(e)}), 500
+        db.session.rollback() # En caso de error, realiza un rollback para deshacer los cambios pendientes en la sesión de la base de datos
+        return jsonify({'error': 'No se pudo eliminar el equipo', 'message': str(e)}), 500 # Devuelve una respuesta JSON indicando que no se pudo eliminar el equipo y el mensaje de error específico
 
 
-@app.route('/equipos/<int:equipo_id>', methods=['PUT'])
+@app.route('/equipos/<equipo_id>', methods=['PUT'])
 def editar_equipo(equipo_id):
     try:
-        data = request.json
-        equipo = Equipo.query.get_or_404(equipo_id)
+        data = request.json # Obtener los datos JSON enviados en la solicitud
+        equipo = Equipo.query.get_or_404(equipo_id) # Obtener el equipo por su ID o devolver un error 404 si no existe
 
-        # Actualizar datos del equipo
+        # Actualizar datos del equipo con los valores recibidos o mantener los actuales si no se proporcionan nuevos valores
         equipo.nombre_equipo = data.get('nombre_equipo', equipo.nombre_equipo)
         equipo.puntaje = data.get('puntaje', equipo.puntaje)
-        # Actualizar jugadores asociados si es necesario
         equipo.arquero_id = data.get('arquero_id', equipo.arquero_id)
         equipo.defensa1_id = data.get('defensa1_id', equipo.defensa1_id)
         equipo.defensa2_id = data.get('defensa2_id', equipo.defensa2_id)
         equipo.medio_id = data.get('medio_id', equipo.medio_id)
         equipo.delantero_id = data.get('delantero_id', equipo.delantero_id)
 
-        db.session.commit()
+        db.session.commit() # Confirmar los cambios en la base de datos
 
-        return jsonify({'message': 'Equipo actualizado correctamente'}), 200
+        return jsonify({'message': 'Equipo actualizado correctamente'}), 200 # Devolver mensaje de éxito con código HTTP 200
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': str(e)}), 500 # Devolver mensaje de error con código HTTP 500 en caso de excepción
 
 
 if __name__ == '__main__':
