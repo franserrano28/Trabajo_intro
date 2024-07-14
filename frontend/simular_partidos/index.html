@@ -1,80 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dream Team</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<form id="partido" onsubmit="jugarPartido(event)">
-    <select name="local" required></select>
-    <select name="visitante" required></select>
-    <button id="submit">Jugar</button>
-</form>
-<script>
-    function response_received(response) {
-        console.log('Response received:', response);
-        return response.json();
-    }
-
-    function request_error(error) {
-        console.error('Request failed:', error);
-    }
-
-    function fillForm(equipos, position) {
-        const select = document.querySelector(`select[name="${position}"]`);
-        select.innerHTML = '';
-
-        equipos.forEach(equipo => {
-            const option = document.createElement("option");
-            option.value = equipo.id;
-            option.textContent = equipo.nombre_equipo;
-            select.append(option);
-        });
-    }
-
-    function jugarPartido(event){
-        event.preventDefault();
-
-        const local = document.querySelector('select[name="local"]').value;
-        const visitante = document.querySelector('select[name="visitante"]').value;
-
-        const partido = {
-            equipo_local_id: local,
-            equipo_visitante_id: visitante
-        };
-
-        function success(data){
-            console.log('Partido created:', data);
-            alert("Iniciando partido...");
+    <header>
+        <a class="logo-link"href="/">
+            <img src="../Encabezado_DreamTeam.png" alt="Logo Dream team">
+        </a>
+        <a class="promiedos" href="https://www.promiedos.com.ar/" target="_blank">Que es DREAM TEAM?</a>
+    </header>
+    <form id="partido" onsubmit="jugarPartido(event)">
+        <div class="content-select">
+            <h1>Equipo Local</h1>
+            <select class="local" name="local" required></select>
+            <select class="visitante" name="visitante" required></select>
+            <h1>Equipo Visitante</h1>
+        </div>
+        <button id="submit">Jugar</button>
+    </form>
+    <script>
+        function response_received(response) {
+            console.log('Response received:', response);
+            return response.json();
         }
 
-        fetch("http://localhost:5000/crear_partido", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(partido)
-        })
+        function request_error(error) {
+            console.error('Request failed:', error);
+        }
+
+        function fillForm(equipos, position) {
+            const select = document.querySelector(`select[name="${position}"]`);
+            select.innerHTML = '';
+
+            equipos.forEach(equipo => {
+                const option = document.createElement("option");
+                option.value = equipo.id;
+                option.textContent = equipo.nombre_equipo;
+                select.append(option);
+            });
+        }
+
+        function jugarPartido(event){
+            event.preventDefault();
+
+            const local = document.querySelector('select[name="local"]').value;
+            const visitante = document.querySelector('select[name="visitante"]').value;
+
+            const partido = {
+                equipo_local_id: local,
+                equipo_visitante_id: visitante
+            };
+
+            function success(data){
+                console.log('Partido created:', data);
+                alert("Iniciando partido...");
+            }
+
+            fetch("http://localhost:5000/crear_partido", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(partido)
+            })
+                .then(response_received)
+                .then(success)
+                .catch(request_error);
+        }
+
+
+        function parse_data(data){
+            const equipos = data;
+
+            fillForm(equipos, "local");
+            fillForm(equipos, "visitante");
+        }
+
+
+        fetch("http://localhost:5000/equipos")
             .then(response_received)
-            .then(success)
+            .then(parse_data)
             .catch(request_error);
-    }
 
-
-    function parse_data(data){
-        const equipos = data;
-
-        fillForm(equipos, "local");
-        fillForm(equipos, "visitante");
-    }
-
-
-    fetch("http://localhost:5000/equipos")
-        .then(response_received)
-        .then(parse_data)
-        .catch(request_error);
-
-</script>
+    </script>
 </body>
 </html>

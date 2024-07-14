@@ -21,6 +21,9 @@ header img{
     width: 100%;
     border-radius: 100px;
 }
+header img:hover{
+    background-color: #7b7b7b6c;
+}
 header .promiedos{
     color: white;
     text-decoration: none;

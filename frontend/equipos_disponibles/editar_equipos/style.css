@@ -12,7 +12,7 @@ header{
     padding-bottom: 2%;
 }
 header .logo-link {
-    width: 35%; /* Adjust the width as needed */
+    width: 35%;
     margin-left: 10%;
     margin-top: 2%;
 }
@@ -21,6 +21,9 @@ header img{
     width: 100%;
     border-radius: 100px;
 }
+header img:hover{
+    background-color: #7b7b7b6c;
+}
 header .promiedos{
     color: white;
     text-decoration: none;
@@ -28,6 +31,9 @@ header .promiedos{
     float: right;
     margin-right: 10%;
     margin-top: 2%;
+}
+header .promiedos:hover{
+    color:aqua;
 }
 header .promiedos:hover{
     color:aqua;
