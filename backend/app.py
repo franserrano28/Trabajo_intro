@@ -20,71 +20,6 @@ def hello_world():
     return 'Hello world!'
 
 
-@app.route('/crear_partido', methods=['POST'])
-def crear_partido():
-    try:
-        data = request.json
-
-        equipo_local_id = data['equipo_local_id']
-        equipo_visitante_id = data['equipo_visitante_id']
-
-        equipo_local = Equipo.query.get(equipo_local_id)
-        equipo_visitante = Equipo.query.get(equipo_visitante_id)
-
-        probabilidad_local, probabilidad_visitante = calcular_probabilidades(equipo_local, equipo_visitante)
-
-        goles_local = simular_goles(probabilidad_local)
-        goles_visitante = simular_goles(probabilidad_visitante)
-
-        resultado_partido = f"{goles_local}-{goles_visitante}"
-
-        partido = Partido(
-            equipo_local_id=equipo_local_id,
-            equipo_visitante_id=equipo_visitante_id,
-            resultado=resultado_partido,
-            goles_equipo_local=goles_local,
-            goles_equipo_visitante=goles_visitante
-        )
-
-        db.session.add(partido)
-        db.session.commit()
-
-        return jsonify({
-            'message': 'Partido creado correctamente',
-            'partido': {
-                'id': partido.id,
-                'equipo_local_id': partido.equipo_local_id,
-                'equipo_visitante_id': partido.equipo_visitante_id,
-                'resultado': partido.resultado,
-                'goles_equipo_local': partido.goles_equipo_local,
-                'goles_equipo_visitante': partido.goles_equipo_visitante
-            }
-        }), 201
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
-def calcular_probabilidades(equipo_local, equipo_visitante):
-    # Calcular el puntaje total sumando los puntajes de ambos equipos
-    total_puntaje = equipo_local.puntaje + equipo_visitante.puntaje
-
-    # Calcular las probabilidades para cada equipo
-    probabilidad_local = equipo_local.puntaje / total_puntaje
-    probabilidad_visitante = equipo_visitante.puntaje / total_puntaje
-
-    # Devolver las probabilidades calculadas
-    return probabilidad_local, probabilidad_visitante
-
-
-def simular_goles(probabilidad):
-    goles = 0
-    for _ in range(6):
-        goles += random.choices([0, 1], [1 - probabilidad, probabilidad])[0]
-    return goles
-
-
-
 @app.route('/jugadores', methods=['GET'])
 def get_jugadores():
     try:
@@ -220,18 +155,115 @@ def editar_equipo(equipo_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500 # Devolver mensaje de error con código HTTP 500 en caso de excepción
 
-
 @app.route('/eliminar_equipo/<equipo_id>', methods=['DELETE'])
 def eliminar_equipo(equipo_id):
     try:
-        equipo = Equipo.query.get_or_404(equipo_id) # Intenta obtener el equipo con el ID proporcionado o devuelve un error 404 si no existe
-        db.session.delete(equipo)  # Elimina el equipo de la sesión de la base de datos
-        db.session.commit()  # Confirma los cambios en la base de datos
-        return jsonify({'message': 'Equipo eliminado correctamente'}), 200
-    except Exception as e:
-        db.session.rollback() # En caso de error, realiza un rollback para deshacer los cambios pendientes en la sesión de la base de datos
-        return jsonify({'error': 'No se pudo eliminar el equipo', 'message': str(e)}), 500 # Devuelve una respuesta JSON indicando que no se pudo eliminar el equipo y el mensaje de error específico
+        equipo = Equipo.query.get_or_404(equipo_id)
 
+        # Eliminar partidos en los que el equipo es el equipo local
+        partidos_local = Partido.query.filter_by(equipo_local_id=equipo_id).all()
+        for partido in partidos_local:
+            db.session.delete(partido)
+        db.session.commit()
+        # Eliminar partidos en los que el equipo es el equipo visitante
+        partidos_visitante = Partido.query.filter_by(equipo_visitante_id=equipo_id).all()
+        for partido in partidos_visitante:
+            db.session.delete(partido)
+        db.session.commit()
+        # Elimina el equipo
+        db.session.delete(equipo)
+
+        # Confirma los cambios en la base de datos
+        db.session.commit()
+
+        return jsonify({'message': 'Equipo y partidos eliminados correctamente'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'No se pudo eliminar el equipo', 'message': str(e)}), 500
+
+
+@app.route('/crear_partido', methods=['POST'])
+def crear_partido():
+    try:
+        data = request.json
+
+        equipo_local_id = data['equipo_local_id']
+        equipo_visitante_id = data['equipo_visitante_id']
+
+        equipo_local = Equipo.query.get(equipo_local_id)
+        equipo_visitante = Equipo.query.get(equipo_visitante_id)
+
+        probabilidad_local, probabilidad_visitante = calcular_probabilidades(equipo_local, equipo_visitante)
+
+        goles_local = simular_goles(probabilidad_local)
+        goles_visitante = simular_goles(probabilidad_visitante)
+
+        resultado_partido = f"{goles_local}-{goles_visitante}"
+
+        partido = Partido(
+            equipo_local_id=equipo_local_id,
+            equipo_visitante_id=equipo_visitante_id,
+            resultado=resultado_partido,
+            goles_equipo_local=goles_local,
+            goles_equipo_visitante=goles_visitante
+        )
+
+        db.session.add(partido)
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Partido creado correctamente',
+            'partido': {
+                'id': partido.id,
+                'equipo_local_id': partido.equipo_local_id,
+                'equipo_visitante_id': partido.equipo_visitante_id,
+                'resultado': partido.resultado,
+                'goles_equipo_local': partido.goles_equipo_local,
+                'goles_equipo_visitante': partido.goles_equipo_visitante
+            }
+        }), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+def calcular_probabilidades(equipo_local, equipo_visitante):
+    # Calcular el puntaje total sumando los puntajes de ambos equipos
+    total_puntaje = equipo_local.puntaje + equipo_visitante.puntaje
+
+    # Calcular las probabilidades para cada equipo
+    probabilidad_local = equipo_local.puntaje / total_puntaje
+    probabilidad_visitante = equipo_visitante.puntaje / total_puntaje
+
+    # Devolver las probabilidades calculadas
+    return probabilidad_local, probabilidad_visitante
+
+
+def simular_goles(probabilidad):
+    goles = 0
+    for _ in range(6):
+        goles += random.choices([0, 1], [1 - probabilidad, probabilidad])[0]
+    return goles
+
+
+
+@app.route('/historial_partidos', methods=['GET'])
+def historial_partidos():
+    try:
+        partidos = Partido.query.all()
+        historial = []
+        for partido in partidos:
+            historial.append({
+                'id': partido.id,
+                'equipo_local': Equipo.query.get(partido.equipo_local_id).nombre_equipo,
+                'equipo_visitante': Equipo.query.get(partido.equipo_visitante_id).nombre_equipo,
+                'resultado': partido.resultado,
+                'goles_equipo_local': partido.goles_equipo_local,
+                'goles_equipo_visitante': partido.goles_equipo_visitante
+            })
+        return jsonify(historial), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     print('Starting server...')
