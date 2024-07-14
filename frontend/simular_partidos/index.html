@@ -58,7 +58,7 @@
             padding-bottom: 5%;
         }
         .content-select{
-        	display: flex;
+            display: flex;
             flex-direction: row;
             width: 100%;
             align-items: center;
@@ -67,22 +67,22 @@
             margin-right: 5%;
         }
         .content-select select{
-        	width: 20%;
-        	cursor: pointer;
-          	padding: 7px 10px;
-          	height: 60px;
-        	background: #f0f0f0;
-        	color: #7b7b7b;
-        	font-size: 1em;
-        	color: #999;
-        	font-family: 'Quicksand', sans-serif;
-        	border:2px solid rgba(0,0,0,0.2);
+            width: 20%;
+            cursor: pointer;
+            padding: 7px 10px;
+            height: 60px;
+            background: #f0f0f0;
+            color: #7b7b7b;
+            font-size: 1em;
+            color: #999;
+            font-family: 'Quicksand', sans-serif;
+            border:2px solid rgba(0,0,0,0.2);
             border-radius: 25px;
             position: relative;
         }
-         
+        
         .content-select select:hover{
-        	background: #B1E8CD;
+            background: #B1E8CD;
         }
         .local{
             margin-right: 5%;
@@ -112,89 +112,219 @@
             
             box-shadow: 0 12px 16px 0 rgba(238, 255, 5, 0.24),0 17px 50px 0 rgba(238, 255, 5, 0.19);
         }
+        .historial{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1%;
+            width: 60%;
+            margin-left: 20%;
+            margin-right: 20%;
+            background-color: rgb(31, 28, 28);
+            border-radius: 25px;
+            border:10px solid rgba(0,0,0,0.2);
+            padding-top: 5%;
+            padding-bottom: 5%;
+        }
+        .historial h1{
+            width: 80%;
+            border-bottom: 2px solid rgb(0, 0, 0, 0.2);;
+            padding-bottom: 3%;
+        }
+        .historial-list{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .partido {
+            display: flex;
+            justify-content: space-between;
+            background-color: #7b7b7b;
+            border-radius: 25px;
+            border:10px solid #4d4c4c70;
+            width: 80%;
+            padding-top: 3%;
+            padding-bottom: 3%;
+            margin-bottom: 10px;
+            margin-left: 10%;
+            margin-right: 10%;
+            font-size: 18px;
+        }
 
+        .local-partido{
+            display: flex;
+            justify-content: space-between;
+            width: 45%;
+            margin-left: 5%;
+        }
+
+        .local-partido .equipo {
+            font-weight: bold;
+        }
+
+        .local-partido .goles {
+            font-weight: bold;
+            margin-right: 2%;
+            background-color: white;
+            border-radius: 50px;
+            border:2px solid rgba(240, 231, 231, 0.575);
+            width: 8%;
+            text-align: center;
+        }
+
+        .visitante-partido {
+            display: flex;
+            justify-content: space-between;
+            width: 45%;
+            margin-right: 5%;
+        }
+
+        .visitante-partido .equipo {
+            font-weight: bold;
+        }
+
+        .visitante-partido .goles {
+            font-weight: bold;
+            margin-left: 2%;
+            background-color: white;
+            border-radius: 50px;
+            border:2px solid rgba(240, 231, 231, 0.575);
+            width: 8%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <a class="logo-link"href="/">
-            <img src="../Encabezado_DreamTeam.png" alt="Logo Dream team">
-        </a>
-        <a class="promiedos" href="https://www.promiedos.com.ar/" target="_blank">Que es DREAM TEAM?</a>
-    </header>
-    <form id="partido" onsubmit="jugarPartido(event)">
-        <div class="content-select">
-            <h1>Equipo Local</h1>
-            <select class="local" name="local" required></select>
-            <select class="visitante" name="visitante" required></select>
-            <h1>Equipo Visitante</h1>
-        </div>
-        <button id="submit">Jugar</button>
-    </form>
-    <script>
-        function response_received(response) {
-            console.log('Response received:', response);
-            return response.json();
+<header>
+    <a class="logo-link" href="/">
+        <img src="../Encabezado_DreamTeam.png" alt="Logo Dream team">
+    </a>
+    <a class="promiedos" href="https://www.promiedos.com.ar/" target="_blank">Que es DREAM TEAM?</a>
+</header>
+<form id="partido" onsubmit="jugarPartido(event)">
+    <div class="content-select">
+        <h1>Equipo Local</h1>
+        <select class="local" name="local" required></select>
+        <select class="visitante" name="visitante" required></select>
+        <h1>Equipo Visitante</h1>
+    </div>
+    <button id="submit">Jugar</button>
+</form>
+<div class="historial" id="historial">
+    <h1>Historial de Partidos</h1>
+    <div class="historial-list" id="historial-list">
+    </div>  
+</div>
+<script>
+    function response_received(response) {
+        console.log('Response received:', response);
+        return response.json();
+    }
+
+    function request_error(error) {
+        console.error('Request failed:', error);
+    }
+
+    function fillForm(equipos, position) {
+        const select = document.querySelector(`select[name="${position}"]`);
+        select.innerHTML = '';
+
+        equipos.forEach(equipo => {
+            const option = document.createElement("option");
+            option.value = equipo.id;
+            option.textContent = equipo.nombre_equipo;
+            select.append(option);
+        });
+    }
+
+    function jugarPartido(event){
+        event.preventDefault();
+
+        const local = document.querySelector('select[name="local"]').value;
+        const visitante = document.querySelector('select[name="visitante"]').value;
+
+        const partido = {
+            equipo_local_id: local,
+            equipo_visitante_id: visitante
+        };
+
+        function success(data){
+            console.log('Partido creado:', data);
+            const resultado = data.partido.resultado;
+            alert(`El resultado del partido es: ${resultado}`);
+            loadHistorial();  // Recargar el historial después de crear un partido
         }
 
-        function request_error(error) {
-            console.error('Request failed:', error);
-        }
+        fetch("http://localhost:5000/crear_partido", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(partido)
+        })
+            .then(response_received)
+            .then(success)
+            .catch(request_error);
+    }
 
-        function fillForm(equipos, position) {
-            const select = document.querySelector(`select[name="${position}"]`);
-            select.innerHTML = '';
+    function parse_data(data){
+        const equipos = data;
 
-            equipos.forEach(equipo => {
-                const option = document.createElement("option");
-                option.value = equipo.id;
-                option.textContent = equipo.nombre_equipo;
-                select.append(option);
+        fillForm(equipos, "local");
+        fillForm(equipos, "visitante");
+    }
+
+    function loadHistorial() {
+        function displayHistorial(partidos) {
+            const historialList = document.getElementById('historial-list');
+            historialList.innerHTML = '';
+
+            partidos.forEach(partido => {
+                const partidoDiv = document.createElement('div');
+                partidoDiv.className = 'partido';
+
+                const localDiv = document.createElement('div');
+                localDiv.className = 'local';
+
+                const visitanteDiv = document.createElement('div');
+                visitanteDiv.className = 'visitante';
+
+                const localEquipoDiv = document.createElement('div');
+                localEquipoDiv.className = 'equipo';
+                localEquipoDiv.textContent = partido.equipo_local;
+
+                const localGolesDiv = document.createElement('div');
+                localGolesDiv.className = 'goles';
+                localGolesDiv.textContent = partido.goles_equipo_local;
+
+                const visitanteEquipoDiv = document.createElement('div');
+                visitanteEquipoDiv.className = 'equipo';
+                visitanteEquipoDiv.textContent = partido.equipo_visitante;
+
+                const visitanteGolesDiv = document.createElement('div');
+                visitanteGolesDiv.className = 'goles';
+                visitanteGolesDiv.textContent = partido.goles_equipo_visitante;
+
+                localDiv.append(localEquipoDiv, localGolesDiv);
+                visitanteDiv.append(visitanteGolesDiv, visitanteEquipoDiv);
+                partidoDiv.append(localDiv, visitanteDiv);
+                historialList.append(partidoDiv);
             });
         }
 
-        function jugarPartido(event){
-            event.preventDefault();
-
-            const local = document.querySelector('select[name="local"]').value;
-            const visitante = document.querySelector('select[name="visitante"]').value;
-
-            const partido = {
-                equipo_local_id: local,
-                equipo_visitante_id: visitante
-            };
-
-            function success(data){
-                console.log('Partido created:', data);
-                alert("Iniciando partido...");
-            }
-
-            fetch("http://localhost:5000/crear_partido", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(partido)
-            })
-                .then(response_received)
-                .then(success)
-                .catch(request_error);
-        }
-
-
-        function parse_data(data){
-            const equipos = data;
-
-            fillForm(equipos, "local");
-            fillForm(equipos, "visitante");
-        }
-
-
-        fetch("http://localhost:5000/equipos")
+        fetch("http://localhost:5000/historial_partidos")
             .then(response_received)
-            .then(parse_data)
+            .then(displayHistorial)
             .catch(request_error);
+    }
 
-    </script>
+    fetch("http://localhost:5000/equipos")
+        .then(response_received)
+        .then(parse_data)
+        .catch(request_error);
+
+    window.onload = loadHistorial;  // Cargar el historial cuando la página se cargue
+</script>
 </body>
 </html>
