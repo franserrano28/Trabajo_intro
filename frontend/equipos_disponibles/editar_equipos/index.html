@@ -448,6 +448,11 @@
         const medio = jugadores.find(j => j.id == form.mediocampista.value);
         const delantero = jugadores.find(j => j.id == form.delantero.value);
 
+        if (defensa1.id === defensa2.id) {
+            alert("Los defensores seleccionados no pueden ser iguales.");
+            return; // Detener el proceso si los defensores son iguales
+        }
+
         const puntaje = (arquero.puntaje + defensa1.puntaje + defensa2.puntaje + medio.puntaje + delantero.puntaje) / 5;
 
         const equipo = {

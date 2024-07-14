@@ -244,6 +244,11 @@
         const local = document.querySelector('select[name="local"]').value;
         const visitante = document.querySelector('select[name="visitante"]').value;
 
+        if (local === visitante) {
+            alert("Los equipos seleccionados no pueden ser iguales.");
+            return; // Detener el proceso si los equipos son iguales
+        }
+
         const partido = {
             equipo_local_id: local,
             equipo_visitante_id: visitante
@@ -285,10 +290,10 @@
                 partidoDiv.className = 'partido';
 
                 const localDiv = document.createElement('div');
-                localDiv.className = 'local';
+                localDiv.className = 'local-partido';
 
                 const visitanteDiv = document.createElement('div');
-                visitanteDiv.className = 'visitante';
+                visitanteDiv.className = 'visitante-partido';
 
                 const localEquipoDiv = document.createElement('div');
                 localEquipoDiv.className = 'equipo';
