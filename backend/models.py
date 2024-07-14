@@ -38,8 +38,11 @@ class Partido(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     equipo_local_id = db.Column(db.Integer, db.ForeignKey('equipos.id'))
     equipo_visitante_id = db.Column(db.Integer, db.ForeignKey('equipos.id'))
-    resultado = db.Column(db.Integer, nullable=False)
+    resultado = db.Column(db.String(10), nullable=False)  # Cambiado a String para almacenar "2-1"
+    goles_equipo_local = db.Column(db.Integer, nullable=False, default=0)
+    goles_equipo_visitante = db.Column(db.Integer, nullable=False, default=0)
     fecha = db.Column(db.DateTime, default=datetime.datetime.now())
+
 
 class Equipo_rivales(db.Model):
     __tablename__ = 'equipos_rivales'

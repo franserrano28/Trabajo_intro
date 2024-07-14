@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 from models import db, Equipo, Jugador, Partido, Equipo_rivales
 
+import random
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -14,6 +18,71 @@ db.init_app(app)
 @app.route('/')
 def hello_world():
     return 'Hello world!'
+
+
+@app.route('/crear_partido', methods=['POST'])
+def crear_partido():
+    try:
+        data = request.json
+
+        equipo_local_id = data['equipo_local_id']
+        equipo_visitante_id = data['equipo_visitante_id']
+
+        equipo_local = Equipo.query.get(equipo_local_id)
+        equipo_visitante = Equipo.query.get(equipo_visitante_id)
+
+        probabilidad_local, probabilidad_visitante = calcular_probabilidades(equipo_local, equipo_visitante)
+
+        goles_local = simular_goles(probabilidad_local)
+        goles_visitante = simular_goles(probabilidad_visitante)
+
+        resultado_partido = f"{goles_local}-{goles_visitante}"
+
+        partido = Partido(
+            equipo_local_id=equipo_local_id,
+            equipo_visitante_id=equipo_visitante_id,
+            resultado=resultado_partido,
+            goles_equipo_local=goles_local,
+            goles_equipo_visitante=goles_visitante
+        )
+
+        db.session.add(partido)
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Partido creado correctamente',
+            'partido': {
+                'id': partido.id,
+                'equipo_local_id': partido.equipo_local_id,
+                'equipo_visitante_id': partido.equipo_visitante_id,
+                'resultado': partido.resultado,
+                'goles_equipo_local': partido.goles_equipo_local,
+                'goles_equipo_visitante': partido.goles_equipo_visitante
+            }
+        }), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+def calcular_probabilidades(equipo_local, equipo_visitante):
+    # Calcular el puntaje total sumando los puntajes de ambos equipos
+    total_puntaje = equipo_local.puntaje + equipo_visitante.puntaje
+
+    # Calcular las probabilidades para cada equipo
+    probabilidad_local = equipo_local.puntaje / total_puntaje
+    probabilidad_visitante = equipo_visitante.puntaje / total_puntaje
+
+    # Devolver las probabilidades calculadas
+    return probabilidad_local, probabilidad_visitante
+
+
+def simular_goles(probabilidad):
+    goles = 0
+    for _ in range(6):
+        goles += random.choices([0, 1], [1 - probabilidad, probabilidad])[0]
+    return goles
+
 
 
 @app.route('/jugadores', methods=['GET'])

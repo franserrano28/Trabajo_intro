@@ -6,71 +6,75 @@
     <title>Document</title>
 </head>
 <body>
+<form id="partido" onsubmit="jugarPartido(event)">
     <select name="local" required></select>
     <select name="visitante" required></select>
     <button id="submit">Jugar</button>
+</form>
+<script>
+    function response_received(response) {
+        console.log('Response received:', response);
+        return response.json();
+    }
 
-    <script>
-        function response_received(response) {
-            console.log('Response received:', response);
-            return response.json();
+    function request_error(error) {
+        console.error('Request failed:', error);
+    }
+
+    function fillForm(equipos, position) {
+        const select = document.querySelector(`select[name="${position}"]`);
+        select.innerHTML = '';
+
+        equipos.forEach(equipo => {
+            const option = document.createElement("option");
+            option.value = equipo.id;
+            option.textContent = equipo.nombre_equipo;
+            select.append(option);
+        });
+    }
+
+    function jugarPartido(event){
+        event.preventDefault();
+
+        const local = document.querySelector('select[name="local"]').value;
+        const visitante = document.querySelector('select[name="visitante"]').value;
+
+        const partido = {
+            equipo_local_id: local,
+            equipo_visitante_id: visitante
+        };
+
+        function success(data){
+            console.log('Partido created:', data);
+            alert("Iniciando partido...");
         }
 
-        function request_error(error) {
-            console.error('Request failed:', error);
-        }
-        
-        function fillForm(equipos, position) {
-            const select = document.querySelector(`select[name="${position}"]`);
-            select.innerHTML = '';
-
-            equipos.forEach(equipo => {
-                const option = document.createElement("option");
-                option.value = equipo.id;
-                option.textContent = equipo.nombre_equipo;
-                select.append(option);
-            });
-        }
-
-        function jugarPartido(event){
-            event.preventDefault();
-
-            const local = document.querySelector('select[name="local"]').value;
-            const visitante = document.querySelector('select[name="visitante"]').value;
-
-            const partido = {
-                local: local,
-                visitante: visitante
-            };
-            
-            fetch("http://localhost:5000/crear_partido", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(partido)
-            })
+        fetch("http://localhost:5000/crear_partido", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(partido)
+        })
             .then(response_received)
-            .then(data => {
-                console.log('Partido created:', data);
-                alert("Iniciando partido...");
-            })
+            .then(success)
             .catch(request_error);
-        }
+    }
 
-        function parse_data(data){
-            const equipos = data;
 
-            fillForm(equipos, "local");
-            fillForm(equipos, "visitante");
-        }
+    function parse_data(data){
+        const equipos = data;
 
-        document.getElementById("submit").addEventListener("click", jugarPartido);
+        fillForm(equipos, "local");
+        fillForm(equipos, "visitante");
+    }
 
-        fetch("http://localhost:5000/equipos")
-            .then(response_received)
-            .then(parse_data)
-            .catch(request_error);
-    </script>
+
+    fetch("http://localhost:5000/equipos")
+        .then(response_received)
+        .then(parse_data)
+        .catch(request_error);
+
+</script>
 </body>
 </html>
