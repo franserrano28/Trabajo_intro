@@ -12,7 +12,7 @@ source venv/bin/activate
 cd backend
 flask run --debug
 ```
-##Abro otra terminal
+## Abro otra terminal
 ```bash
 cd frontend
 python3 -m http.server
