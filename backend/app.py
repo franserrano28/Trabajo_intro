@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from models import db, Equipo, Jugador, Partido, Equipo_rivales
+from models import db, Equipo, Jugador, Partido
 
 import random
 from datetime import datetime
