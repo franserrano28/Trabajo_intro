@@ -17,12 +17,6 @@ class Equipo(db.Model):
     medio_id = db.Column(db.Integer, db.ForeignKey('jugadores.id'))
     delantero_id = db.Column(db.Integer, db.ForeignKey('jugadores.id'))
 
-    arquero = relationship("Jugador", foreign_keys=[arquero_id])
-    defensor_1 = relationship("Jugador", foreign_keys=[defensor_1_id])
-    defensor_2 = relationship("Jugador", foreign_keys=[defensor_2_id])
-    medio = relationship("Jugador", foreign_keys=[medio_id])
-    delantero = relationship("Jugador", foreign_keys=[delantero_id])
-
 
 class Jugador(db.Model):
     __tablename__ = 'jugadores'
@@ -32,7 +26,8 @@ class Jugador(db.Model):
     nacionalidad = db.Column(db.String(20), nullable=False)
     edad = db.Column(db.Integer, nullable=False)
     puntaje = db.Column(db.Integer, nullable=False)
-    
+
+
 class Partido(db.Model):
     __tablename__ = 'partidos'
     id = db.Column(db.Integer, primary_key=True)
@@ -44,12 +39,7 @@ class Partido(db.Model):
     fecha = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
-class Equipo_rivales(db.Model):
-    __tablename__ = 'equipos_rivales'
-    id = db.Column(db.Integer, primary_key=True)
-    nombre_equipo = db.Column(db.String(25), nullable=False)
-    puntaje = db.Column(db.Integer, nullable=False)
-    
+
 
 
     
